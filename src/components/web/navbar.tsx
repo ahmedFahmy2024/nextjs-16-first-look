@@ -3,13 +3,18 @@
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import { ThemeToggle } from "./theme-toggle";
+import { useConvexAuth } from "convex/react";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
   const toggleMenu = () => setIsOpen(!isOpen);
+  const { isAuthenticated, isLoading } = useConvexAuth();
+  const router = useRouter();
 
   return (
     <nav className="shadow-md">
@@ -31,18 +36,42 @@ export default function Navbar() {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center gap-2">
-            <Link
-              href="/sign-up"
-              className={buttonVariants({ variant: "outline" })}
-            >
-              Sign Up
-            </Link>
-            <Link
-              href="/login"
-              className={buttonVariants({ variant: "default" })}
-            >
-              Login
-            </Link>
+            {isLoading ? null : isAuthenticated ? (
+              <Button
+                variant="destructive"
+                className="cursor-pointer"
+                onClick={() =>
+                  authClient.signOut({
+                    fetchOptions: {
+                      onSuccess: () => {
+                        toast.success("You have been signed out.");
+                        router.push("/");
+                      },
+                      onError: (error) => {
+                        toast.error(error.error.message);
+                      },
+                    },
+                  })
+                }
+              >
+                Logout
+              </Button>
+            ) : (
+              <>
+                <Link
+                  href="/sign-up"
+                  className={buttonVariants({ variant: "outline" })}
+                >
+                  Sign Up
+                </Link>
+                <Link
+                  href="/login"
+                  className={buttonVariants({ variant: "default" })}
+                >
+                  Login
+                </Link>
+              </>
+            )}
             <ThemeToggle />
           </div>
 
