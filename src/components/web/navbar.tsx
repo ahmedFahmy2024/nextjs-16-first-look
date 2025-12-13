@@ -1,14 +1,14 @@
 "use client";
 
+import { useConvexAuth } from "convex/react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
+import { authClient } from "@/lib/auth-client";
 import { Button, buttonVariants } from "../ui/button";
 import { ThemeToggle } from "./theme-toggle";
-import { useConvexAuth } from "convex/react";
-import { authClient } from "@/lib/auth-client";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);

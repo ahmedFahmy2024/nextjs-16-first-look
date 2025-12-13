@@ -1,6 +1,9 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,11 +20,8 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { signUpSchema, type TypeSignUpSchema } from "@/schemas/auth";
 import { authClient } from "@/lib/auth-client";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { signUpSchema, type TypeSignUpSchema } from "@/schemas/auth";
 
 export default function SignUpPage() {
   const router = useRouter();

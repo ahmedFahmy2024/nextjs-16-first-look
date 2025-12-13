@@ -1,4 +1,9 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,12 +21,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
-import { loginSchema, TypeLoginSchema } from "@/schemas/auth";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { loginSchema, type TypeLoginSchema } from "@/schemas/auth";
 
 export default function LoginPage() {
   const router = useRouter();
