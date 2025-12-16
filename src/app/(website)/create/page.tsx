@@ -1,11 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "convex/react";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { createBlogAction } from "@/actions/actions";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,31 +19,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { blogSchema, type TypeBlogSchema } from "@/schemas/blog";
-import { api } from "../../../../convex/_generated/api";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
 
 export default function CreateBlog() {
-  const router = useRouter();
-  const createPost = useMutation(api.posts.createPost);
-
   const form = useForm<TypeBlogSchema>({
     resolver: zodResolver(blogSchema),
     defaultValues: {
       title: "",
       content: "",
+      image: undefined,
     },
   });
 
   async function onSubmit(data: TypeBlogSchema) {
-    // createPost({
-    //   title: data.title,
-    //   body: data.content,
-    // });
-
     await createBlogAction(data);
-
-    // toast.success("Post created successfully");
-
-    // router.push("/");
   }
 
   return (
@@ -101,6 +86,36 @@ export default function CreateBlog() {
                       id="form-content"
                       aria-invalid={fieldState.invalid}
                       placeholder="write your content here"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+
+              <Controller
+                name="image"
+                control={form.control}
+                render={({
+                  field: { value, onChange, ...fieldProps },
+                  fieldState,
+                }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="form-image">Image</FieldLabel>
+                    <Input
+                      {...fieldProps}
+                      id="form-image"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Image"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          onChange(file);
+                        }
+                      }}
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />

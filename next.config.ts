@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "tacit-badger-796.convex.cloud",
+        port: "",
+      },
     ],
   },
 };
