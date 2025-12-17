@@ -4,8 +4,10 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { api } from "../../../../convex/_generated/api";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "../../../../convex/_generated/api";
+
+export const dynamic = "force-static";
 
 export default function BlogPage() {
   return (
