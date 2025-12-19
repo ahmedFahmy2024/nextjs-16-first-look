@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         hostname: "tacit-badger-796.convex.cloud",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "effervescent-albatross-297.convex.cloud",
+        port: "",
+      },
     ],
   },
 };
