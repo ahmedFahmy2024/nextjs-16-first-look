@@ -6,6 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "../../../../convex/_generated/api";
+import { connection } from "next/server";
 
 export default function BlogPage() {
   return (
@@ -27,9 +28,10 @@ export default function BlogPage() {
 }
 
 async function LoadBlogList() {
-  "use cache";
-  cacheLife("hours");
-  cacheTag("posts");
+  // "use cache";
+  // cacheLife("hours");
+  // cacheTag("posts");
+  await connection();
 
   const data = await fetchQuery(api.posts.getPosts);
   console.log(data);
