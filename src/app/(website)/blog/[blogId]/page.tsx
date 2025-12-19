@@ -1,10 +1,12 @@
-import { fetchQuery } from "convex/nextjs";
+import { fetchQuery, preloadQuery } from "convex/nextjs";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CommentSection } from "@/components/web/CommentSection";
+import PostPresence from "@/components/web/PostPresence";
+import { getToken } from "@/lib/auth-server";
 import { api } from "../../../../../convex/_generated/api";
 import type { Id } from "../../../../../convex/_generated/dataModel";
 
@@ -14,8 +16,15 @@ type Props = {
 
 export default async function BlogDetail({ params }: Props) {
   const { blogId } = await params;
+  const token = await getToken();
 
-  const post = await fetchQuery(api.posts.getPostById, { postId: blogId });
+  const [post, preloadedComments, userId] = await Promise.all([
+    await fetchQuery(api.posts.getPostById, { postId: blogId }),
+    await preloadQuery(api.comments.getCommentsByPostId, {
+      postId: blogId,
+    }),
+    await fetchQuery(api.presence.getUserId, {}, { token }),
+  ]);
 
   if (!post) {
     return <div className="text-center">Post not found</div>;
@@ -42,9 +51,12 @@ export default async function BlogDetail({ params }: Props) {
 
       <div className="space-y-4 flex flex-col">
         <h1 className="text-4xl font-bold">{post.title}</h1>
-        <p className="text-sm text-muted-foreground">
-          Posted on: {new Date(post._creationTime).toLocaleDateString()}
-        </p>
+        <div className="flex items-center gap-2">
+          <p className="text-sm text-muted-foreground">
+            Posted on: {new Date(post._creationTime).toLocaleDateString()}
+          </p>
+          {userId && <PostPresence roomId={post._id} userId={userId} />}
+        </div>
       </div>
 
       <Separator className="my-8" />
@@ -54,7 +66,7 @@ export default async function BlogDetail({ params }: Props) {
 
       <Separator className="my-8" />
 
-      <CommentSection />
+      <CommentSection preloadedComments={preloadedComments} />
     </div>
   );
 }
