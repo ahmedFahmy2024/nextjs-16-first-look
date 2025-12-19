@@ -40,9 +40,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main className="min-h-screen space-y-6">
-            <Suspense>
-              <ConvexClientProvider>{children}</ConvexClientProvider>
-            </Suspense>
+            {/* <Suspense> */}
+            <ConvexClientProvider>{children}</ConvexClientProvider>
+            {/* </Suspense> */}
           </main>
           <Toaster position="bottom-right" richColors closeButton />
         </ThemeProvider>

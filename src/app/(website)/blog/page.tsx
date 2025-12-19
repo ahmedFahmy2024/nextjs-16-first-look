@@ -28,10 +28,10 @@ export default function BlogPage() {
 }
 
 async function LoadBlogList() {
-  // "use cache";
-  // cacheLife("hours");
-  // cacheTag("posts");
-  await connection();
+  "use cache";
+  cacheLife("hours");
+  cacheTag("posts");
+  // await connection();
 
   const data = await fetchQuery(api.posts.getPosts);
   console.log(data);
