@@ -1,7 +1,7 @@
 "use server";
 
 import { fetchMutation } from "convex/nextjs";
-import { revalidatePath } from "next/cache";
+import { updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { getToken } from "@/lib/auth-server";
 import { blogSchema, type TypeBlogSchema } from "@/schemas/blog";
@@ -54,6 +54,6 @@ export async function createBlogAction(data: TypeBlogSchema) {
     };
   }
 
-  revalidatePath("/blog");
+  updateTag("posts");
   return redirect("/blog");
 }

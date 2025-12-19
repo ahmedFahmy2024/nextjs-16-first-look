@@ -1,13 +1,11 @@
 import { fetchQuery } from "convex/nextjs";
+import { cacheLife, cacheTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "../../../../convex/_generated/api";
-
-export const dynamic = "force-static";
 
 export default function BlogPage() {
   return (
@@ -21,14 +19,18 @@ export default function BlogPage() {
         </p>
       </div>
 
-      <Suspense fallback={<BlogSkeleton />}>
-        <LoadBlogList />
-      </Suspense>
+      {/* <Suspense fallback={<BlogSkeleton />}> */}
+      <LoadBlogList />
+      {/* </Suspense> */}
     </div>
   );
 }
 
 async function LoadBlogList() {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("posts");
+
   const data = await fetchQuery(api.posts.getPosts);
   console.log(data);
   return (
