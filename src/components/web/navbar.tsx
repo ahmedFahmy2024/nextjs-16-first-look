@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { Button, buttonVariants } from "../ui/button";
 import { ThemeToggle } from "./theme-toggle";
+import SearchInput from "./SearchInput";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,6 +37,9 @@ export default function Navbar() {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center gap-2">
+            <div className="hidden md:block mr-2">
+              <SearchInput />
+            </div>
             {isLoading ? null : isAuthenticated ? (
               <Button
                 variant="destructive"
